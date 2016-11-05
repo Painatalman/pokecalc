@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c5cbb0317524fe2f87cd"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "96e5ad69a16b8e6d95db"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -596,15 +596,33 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
+	var _PokemonType = __webpack_require__(3);
+	
+	var _PokemonType2 = _interopRequireDefault(_PokemonType);
+	
+	var _PokemonTypeCollection = __webpack_require__(4);
+	
+	var _PokemonTypeCollection2 = _interopRequireDefault(_PokemonTypeCollection);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(3)();
+	__webpack_require__(5)();
 	
 	
-	var types = __webpack_require__(4);
+	var types = new _PokemonTypeCollection2.default();
+	
+	__webpack_require__(7).forEach(function (typeAsJson) {
+	  types.addPokemonType(new _PokemonType2.default(typeAsJson));
+	});
+	
+	console.log(types);
 	
 	var app = new _vue2.default({
-	  el: '#app'
+	  el: '#app',
+	  data: {
+	    types: types
+	  },
+	  template: '<attack-checker v-bind:types="types"></attack-checker>'
 	});
 
 /***/ },
@@ -8130,6 +8148,196 @@
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var PokemonType = function () {
+	  // WARNING: month is in the 1-12 format, not the default 0-11 one
+	  function PokemonType() {
+	    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { name: string, isSuperEffectiveAgainst: [], isNotVeryEffectiveAgainst: [], doesNotWorkAgainst: [] };
+	
+	    _classCallCheck(this, PokemonType);
+	
+	    this.name = type.name;
+	    this.isSuperEffectiveAgainst = type.isSuperEffectiveAgainst;
+	    this.isNotVeryEffectiveAgainst = type.isNotVeryEffectiveAgainst;
+	    this.doesNotWorkAgainst = type.doesNotWorkAgainst;
+	  }
+	
+	  _createClass(PokemonType, [{
+	    key: 'getName',
+	    value: function getName() {
+	      return this.name;
+	    }
+	  }, {
+	    key: 'getMultiplierFromOneType',
+	    value: function getMultiplierFromOneType(pokemonTypeOrName) {
+	      // check if falsy... return 1 if so
+	      if (!pokemonTypeOrName) {
+	        return 1;
+	      }
+	      var typeName = pokemonTypeOrName instanceof PokemonType ? pokemonTypeOrName.name : pokemonTypeOrName.toLowerCase();
+	      if (this.isSuperEffectiveAgainst && this.isSuperEffectiveAgainst.includes(typeName)) {
+	        return 2;
+	      } else if (this.isNotVeryEffectiveAgainst && this.isNotVeryEffectiveAgainst.includes(typeName)) {
+	        return 0.5;
+	      } else if (this.doesNotWorkAgainst && this.doesNotWorkAgainst.includes(typeName)) {
+	        return 0;
+	      } else {
+	        // WARNING: this will also consider invalid values... should it?
+	        return 1;
+	      }
+	    }
+	  }, {
+	    key: 'getMultiplier',
+	    value: function getMultiplier() {
+	      var _this = this;
+	
+	      var pokemonTypesOrNames = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	
+	      var modifier = 1;
+	      // if pokemonTypesOrNames is a PokemonTypeCollection instance, it has a getAllTypes method
+	      var pokemonTypes = pokemonTypesOrNames.getAllTypes ? pokemonTypesOrNames.getAllTypes : pokemonTypesOrNames;
+	
+	      if (!(pokemonTypes instanceof Array)) {
+	        throw new Error('The parameter is not an array');
+	      }
+	
+	      pokemonTypes.forEach(function (pokemonType) {
+	        modifier *= _this.getMultiplierFromOneType(pokemonType);
+	      });
+	
+	      return modifier;
+	    }
+	  }]);
+	
+	  return PokemonType;
+	}();
+	
+	exports.default = PokemonType;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var PokemonType = function () {
+	  function PokemonType() {
+	    var pokemonTypes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	
+	    _classCallCheck(this, PokemonType);
+	
+	    this.pokemonTypes = pokemonTypes;
+	  }
+	
+	  _createClass(PokemonType, [{
+	    key: 'addPokemonType',
+	    value: function addPokemonType(pokemonType) {
+	      this.pokemonTypes.push(pokemonType);
+	    }
+	  }, {
+	    key: 'getAllTypes',
+	    value: function getAllTypes() {
+	      return this.pokemonTypes;
+	    }
+	  }, {
+	    key: 'getTypeFromName',
+	    value: function getTypeFromName(name) {
+	      var throwErrorIfNone = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	
+	      name = name.toLowerCase();
+	
+	      var typeCandidates = this.pokemonTypes.filter(function (pokemonType) {
+	        return pokemonType.getName() === name;
+	      });
+	
+	      if (typeCandidates.length) {
+	        return typeCandidates[0];
+	      } else {
+	        if (!throwErrorIfNone) {
+	          return undefined;
+	        } else {
+	          throw new Error('The requested type does not exist');
+	        }
+	      }
+	    }
+	  }]);
+	
+	  return PokemonType;
+	}();
+	
+	exports.default = PokemonType;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _vue = __webpack_require__(2);
+	
+	var _vue2 = _interopRequireDefault(_vue);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	__webpack_require__(6)();
+	
+	// Define a new component called todo-item
+	module.exports = function () {
+	  _vue2.default.component('attack-checker', {
+	    props: ['types'],
+	    data: function data() {
+	      return {
+	        attackerType: null,
+	        defendingType1: null,
+	        defendingType2: null
+	      };
+	    },
+	    template: '\n      <div>\n        <h1>Pok\xE9mon Attack Type checker</h1>\n        <div class="attacker">\n          <type-selector v-on:changeType="updateAttacker" v-bind:types="types"></type-selector>\n        </div>\n        <div class="defender">\n        <type-selector v-on:changeType="updateDefender1" v-bind:types="types"></type-selector>\n        <type-selector v-on:changeType="updateDefender2" v-bind:types="types"></type-selector>\n        </div>\n        <div class="result">\n            {{result}}\n        </div>\n      </div>\n    ',
+	    methods: {
+	      updateAttacker: function updateAttacker(pokemonType) {
+	        console.log('updated attacker to', pokemonType);
+	        this.attackerType = pokemonType;
+	      },
+	      updateDefender1: function updateDefender1(pokemonType) {
+	        console.log('updated defender 1 to', pokemonType);
+	        this.defendingType1 = pokemonType;
+	      },
+	      updateDefender2: function updateDefender2(pokemonType) {
+	        console.log('updated defender 2 to', pokemonType);
+	        this.defendingType2 = pokemonType;
+	      }
+	    },
+	    computed: {
+	      result: function result(e, value) {
+	        console.log('updating result');
+	
+	        return this.attackerType ? this.attackerType.getMultiplier([this.defendingType1, this.defendingType2]) : null;
+	      }
+	    }
+	  });
+	};
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8142,14 +8350,19 @@
 	
 	// Define a new component called todo-item
 	module.exports = function () {
-	  _vue2.default.component('attack-checker', {
+	  _vue2.default.component('type-selector', {
 	    props: ['types'],
-	    template: '\n    <select>\n    <option v-repeat="types" >{{name}}</option>\n    </select>\n    '
+	    template: '\n      <div>\n      <select v-on:change="update">\n      <option value="">Please select a type</option>\n      <option v-for="type in types.getAllTypes()">{{type.name}}</option>\n      </select>\n      </div>\n    ',
+	    methods: {
+	      update: function update(e) {
+	        this.$emit('changeType', this.types.getTypeFromName(e.target.value, false));
+	      }
+	    }
 	  });
 	};
 
 /***/ },
-/* 4 */
+/* 7 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -8159,19 +8372,265 @@
 				"fairy",
 				"grass"
 			],
-			"isNotVeryEffectiveAgains": [
-				"poison"
+			"isNotVeryEffectiveAgainst": [
+				"poison",
+				"ground",
+				"rock",
+				"ghost"
+			],
+			"doesNotWorkAgainst": [
+				"steel"
+			]
+		},
+		{
+			"name": "psychic",
+			"isSuperEffectiveAgainst": [
+				"poison",
+				"fighting"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"psychic",
+				"steel"
+			],
+			"doesNotWorkAgainst": [
+				"dark"
 			]
 		},
 		{
 			"name": "fire",
 			"isSuperEffectiveAgainst": [
-				"fairy",
 				"grass",
+				"ice",
+				"bug",
+				"steel"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"water",
+				"fire",
+				"rock",
+				"dragon"
+			]
+		},
+		{
+			"name": "fairy",
+			"isSuperEffectiveAgainst": [
+				"fighting",
+				"dragon",
+				"dark"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"poison",
+				"fire",
+				"steel"
+			]
+		},
+		{
+			"name": "dark",
+			"isSuperEffectiveAgainst": [
+				"ghost",
+				"psychic"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"fighting",
+				"dark",
+				"fairy"
+			]
+		},
+		{
+			"name": "dragon",
+			"isSuperEffectiveAgainst": [
+				"dragon"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"steel"
+			],
+			"doesNotWorkAgainst": [
+				"fairy"
+			]
+		},
+		{
+			"name": "ice",
+			"isSuperEffectiveAgainst": [
+				"flying",
+				"ground",
+				"grass",
+				"dragon"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"steel",
+				"fire",
+				"water"
+			]
+		},
+		{
+			"name": "electric",
+			"isSuperEffectiveAgainst": [
+				"flying",
+				"water"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"grass",
+				"electric",
+				"dragon"
+			],
+			"doesNotWorkAgainst": [
+				"ground"
+			]
+		},
+		{
+			"name": "grass",
+			"isSuperEffectiveAgainst": [
+				"ground",
+				"rock",
+				"water"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"dragon",
+				"grass",
+				"fire",
+				"bug",
+				"poison",
+				"flying",
+				"steel"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "water",
+			"isSuperEffectiveAgainst": [
+				"ground",
+				"rock",
+				"fire"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"dragon",
+				"grass",
+				"water",
+				"bug"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "steel",
+			"isSuperEffectiveAgainst": [
+				"ice",
+				"rock",
+				"fairy"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"steel",
+				"fire",
+				"water",
+				"electric"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "ghost",
+			"isSuperEffectiveAgainst": [
+				"ghost",
+				"psychic"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"dark"
+			],
+			"doesNotWorkAgainst": [
+				"normal"
+			]
+		},
+		{
+			"name": "bug",
+			"isSuperEffectiveAgainst": [
+				"grass",
+				"psychic",
+				"dark"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"fighting",
+				"flying",
+				"poison",
+				"ghost",
+				"steel",
+				"fire",
+				"bug"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "rock",
+			"isSuperEffectiveAgainst": [
+				"ice",
+				"fire",
+				"flying",
+				"bug"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"steel",
+				"ground",
+				"fighting"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "ground",
+			"isSuperEffectiveAgainst": [
+				"poison",
+				"rock",
+				"steel",
+				"fire",
+				"electric"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"bug",
+				"grass"
+			],
+			"doesNotWorkAgainst": [
+				"flying"
+			]
+		},
+		{
+			"name": "flying",
+			"isSuperEffectiveAgainst": [
+				"fighting",
+				"grass",
+				"bug"
+			],
+			"isNotVeryEffectiveAgainst": [
+				"electric",
+				"rock",
+				"steel"
+			],
+			"doesNotWorkAgainst": []
+		},
+		{
+			"name": "fighting",
+			"isSuperEffectiveAgainst": [
+				"normal",
+				"rock",
+				"steel",
+				"dark",
 				"ice"
 			],
 			"isNotVeryEffectiveAgainst": [
-				"Water"
+				"flying",
+				"poison",
+				"bug",
+				"psychic",
+				"fairy"
+			],
+			"doesNotWorkAgainst": [
+				"ghost"
+			]
+		},
+		{
+			"name": "normal",
+			"isSuperEffectiveAgainst": [],
+			"isNotVeryEffectiveAgainst": [
+				"rock",
+				"steel"
+			],
+			"doesNotWorkAgainst": [
+				"ghost"
 			]
 		}
 	];
