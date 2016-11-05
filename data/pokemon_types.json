@@ -1,0 +1,276 @@
+[
+  {
+    "name": "poison",
+    "isSuperEffectiveAgainst": [
+      "fairy",
+      "grass"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "poison",
+      "ground",
+      "rock",
+      "ghost"
+    ],
+    "doesNotWorkAgainst": [
+      "steel"
+    ]
+  },
+  {
+    "name": "psychic",
+    "isSuperEffectiveAgainst": [
+      "poison",
+      "fighting"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "psychic",
+      "steel"
+    ],
+    "doesNotWorkAgainst": [
+      "dark"
+    ]
+  },
+  {
+    "name": "fire",
+    "isSuperEffectiveAgainst": [
+      "grass",
+      "ice",
+      "bug",
+      "steel"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "water",
+      "fire",
+      "rock",
+      "dragon"
+    ]
+  },
+  {
+    "name": "fairy",
+    "isSuperEffectiveAgainst": [
+      "fighting",
+      "dragon",
+      "dark"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "poison",
+      "fire",
+      "steel"
+    ]
+  },
+  {
+    "name": "dark",
+    "isSuperEffectiveAgainst": [
+      "ghost",
+      "psychic"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "fighting",
+      "dark",
+      "fairy"
+    ]
+  },
+  {
+    "name": "dragon",
+    "isSuperEffectiveAgainst": [
+      "dragon"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "steel"
+    ],
+    "doesNotWorkAgainst": [
+      "fairy"
+    ]
+  },
+  {
+    "name": "ice",
+    "isSuperEffectiveAgainst": [
+      "flying",
+      "ground",
+      "grass",
+      "dragon"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "steel",
+      "fire",
+      "water"
+    ]
+  },
+  {
+    "name": "electric",
+    "isSuperEffectiveAgainst": [
+      "flying",
+      "water"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "grass",
+      "electric",
+      "dragon"
+    ],
+    "doesNotWorkAgainst": [
+      "ground"
+    ]
+  },
+  {
+    "name": "grass",
+    "isSuperEffectiveAgainst": [
+      "ground",
+      "rock",
+      "water"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "dragon",
+      "grass",
+      "fire",
+      "bug",
+      "poison",
+      "flying",
+      "steel"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "water",
+    "isSuperEffectiveAgainst": [
+      "ground",
+      "rock",
+      "fire"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "dragon",
+      "grass",
+      "water",
+      "bug"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "steel",
+    "isSuperEffectiveAgainst": [
+      "ice",
+      "rock",
+      "fairy"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "steel",
+      "fire",
+      "water",
+      "electric"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "ghost",
+    "isSuperEffectiveAgainst": [
+      "ghost",
+      "psychic"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "dark"
+    ],
+    "doesNotWorkAgainst": [
+      "normal"
+    ]
+  },
+  {
+    "name": "bug",
+    "isSuperEffectiveAgainst": [
+      "grass",
+      "psychic",
+      "dark"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "fighting",
+      "flying",
+      "poison",
+      "ghost",
+      "steel",
+      "fire",
+      "bug"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "rock",
+    "isSuperEffectiveAgainst": [
+      "ice",
+      "fire",
+      "flying",
+      "bug"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "steel",
+      "ground",
+      "fighting"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "ground",
+    "isSuperEffectiveAgainst": [
+      "poison",
+      "rock",
+      "steel",
+      "fire",
+      "electric"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "bug",
+      "grass"
+    ],
+    "doesNotWorkAgainst": [
+      "flying"
+    ]
+  },
+  {
+    "name": "flying",
+    "isSuperEffectiveAgainst": [
+      "fighting",
+      "grass",
+      "bug"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "electric",
+      "rock",
+      "steel"
+    ],
+    "doesNotWorkAgainst": [
+    ]
+  },
+  {
+    "name": "fighting",
+    "isSuperEffectiveAgainst": [
+      "normal",
+      "rock",
+      "steel",
+      "dark",
+      "ice"
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "flying",
+      "poison",
+      "bug",
+      "psychic",
+      "fairy"
+    ],
+    "doesNotWorkAgainst": [
+      "ghost"
+    ]
+  },
+  {
+    "name": "normal",
+    "isSuperEffectiveAgainst": [
+    ],
+    "isNotVeryEffectiveAgainst": [
+      "rock",
+      "steel"
+    ],
+    "doesNotWorkAgainst": [
+      "ghost"
+    ]
+  }
+]

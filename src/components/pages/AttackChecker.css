@@ -1,0 +1,39 @@
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+
+}
+
+.page-splash {
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+
+  background: #001122;
+  color: white;
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    text-align: center;
+
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  &__content-message {
+    text-transform: uppercase;
+
+    animation: fade-in 3s;
+  }
+}
